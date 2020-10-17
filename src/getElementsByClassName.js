@@ -12,22 +12,18 @@ var getElementsByClassName = function(className) {
   } else {
     element = arguments[1];
   }
-  console.log(element);
+
+  if (element.classList && element.classList.contains(className)) {
+    results.push(element);
+  }
+
   if (element.hasChildNodes()) {
     for (var i = 0; i < element.childNodes.length; i++) {
-      getElementsByClassName(className, element.childNodes[i]);
-    }
-  }
-  var classes = element.classList;
-  if (classes !== undefined) {
-    for (var i = 0; i < classes.length; i++) {
-      if (classes[i] === className) {
-        results.push(element);
-        i = classes.length;
+      var recursiveResults = getElementsByClassName(className, element.childNodes[i]);
+      if (recursiveResults.length !== 0) {
+        results = results.concat(recursiveResults);
       }
     }
   }
-
-  console.log(results);
   return results;
 };
